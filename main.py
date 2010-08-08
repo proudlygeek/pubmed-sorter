@@ -178,8 +178,13 @@ class pubmedTableList(QAbstractTableModel):
     #    return QVariant(self.publication[index.row()][index.column()])
     
     def data(self, index, role):
-        if role == Qt.UserRole:  #return the whole python object
+        #Nel caso di visualizzazione ritorna l'oggetto per riga e colonna
+        if role == Qt.DisplayRole:
             item = self.publication[index.row()][index.column()]
+            return item
+        #Nel caso di drag and drop ritorna direttamente la riga contenente il record
+        elif role == Qt.UserRole:
+            item = self.publication[index.row()]
             return item
         return QVariant()
     

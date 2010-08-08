@@ -21,9 +21,9 @@ class DragTable(QTableView):
             return
         
         selected = self.model().data(index, Qt.UserRole)
-        print selected.isNull()
+        print selected
         #Conversione a ByteStream
-        bstream = cPickle.dumps(selected.toByteArray())
+        bstream = cPickle.dumps(selected)
         #print pickle.loads(bstream).data()
         mimeData = QMimeData()
         mimeData.setData("application/pubmedrecord", bstream)
