@@ -11,7 +11,7 @@ class TagLabel(QLabel):
         self.setAcceptDrops(True)
     
     def dragEventEnter(self, event):
-        if event.mimeData().hasFormat("application/x-pubmedrecord"):
+        if event.mimeData().hasFormat("application/pubmedrecord"):
             self.set_bg(True)
             event.accept()
         else:

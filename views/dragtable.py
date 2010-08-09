@@ -21,12 +21,22 @@ class DragTable(QTableView):
             return
         
         selected = self.model().data(index, Qt.UserRole)
-        print selected
         #Conversione a ByteStream
         bstream = cPickle.dumps(selected)
         #print pickle.loads(bstream).data()
         mimeData = QMimeData()
         mimeData.setData("application/pubmedrecord", bstream)
+        #animazione drag
+        drag = QDrag(self)
+        drag.setMimeData(mimeData)
+        pixmap = QPixmap()
+        #pixmap.grabWidget(self, self.visualRect(index))
+        pixmap = QPixmap(100, self.height()/2)
+        pixmap.fill(QColor("orange"))
+
+        drag.setHotSpot(QPoint(pixmap.width()/2, pixmap.height()/2))
+        drag.setPixmap(pixmap)
+        result = drag.start(Qt.MoveAction)
     
     def mouseMoveEvent(self, event):
         self.startDrag(event)

@@ -74,7 +74,7 @@ class MainWindow(QMainWindow):
     def fileOpen(self):
         self.fileInput = QFileDialog.getOpenFileName(self, "Apri Documento...", "/home/bargio/Dropbox/PubMed","File di testo (*.txt)")
         if os.path.isfile(self.fileInput):
-            dataToLoad = loadFile(self.fileInput)
+            dataToLoad = loadFile(self.fileInput.replace("\r"," "))
             self.fullScreen()
             centralWidget = CentralWidget(dataToLoad, self)
             self.setCentralWidget(centralWidget)
@@ -169,14 +169,8 @@ class pubmedTableList(QAbstractTableModel):
     #Ritorna il numero di colonne ovvero il numero dei campi di un singolo record
     def columnCount(self, Parent):
         return len(self.publication[0])
+        
     #Mapping struttura dati <-> tabella
-    #def data(self, index, role):
-    #    if not index.isValid():
-    #        return QVariant()
-    #    elif role!=Qt.DisplayRole:
-    #        return QVariant()
-    #    return QVariant(self.publication[index.row()][index.column()])
-    
     def data(self, index, role):
         #Nel caso di visualizzazione ritorna l'oggetto per riga e colonna
         if role == Qt.DisplayRole:
