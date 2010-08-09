@@ -77,8 +77,13 @@ class MainWindow(QMainWindow):
         self.fileInput = QFileDialog.getOpenFileName(self, "Apri Documento...", "/home/bargio/Dropbox/PubMed","File di testo (*.txt)")
         if os.path.isfile(self.fileInput):
             dataToLoad = loadFile(self.fileInput.replace("\r"," "))
+            #Aggiungo il campo per i tag alla struttura dati (conversione a lista)
+            dataWithTagsField = [list(line) for line in dataToLoad]
+            for line in dataWithTagsField:
+                #Inizializza i tag con il simbolo "meno"
+                line.append('-')
             self.fullScreen()
-            centralWidget = CentralWidget(dataToLoad, self)
+            centralWidget = CentralWidget(dataWithTagsField, self)
             self.setCentralWidget(centralWidget)
             self.createDock()
             self.status.showMessage("%s caricato." % self.fileInput,5000)
@@ -144,12 +149,13 @@ class CentralWidget(QWidget):
         layout = QVBoxLayout()
         layout.addWidget(tableView)
         self.setLayout(layout)
-        header = ['#','Dati','PMID']
+        header = ['#','Dati','PMID','Tag']
         tableModel = pubmedTableList(self.data, header, self)
         tableView.setModel(tableModel)
         hh = tableView.horizontalHeader()
         #hh.resizeSection(1, super(CentralWidget, self).width()+100)
         #hh.setResizeMode(QHeaderView.Stretch)
+        hh.swapSections(1,3)
         hh.swapSections(1,2)
         hh.setStretchLastSection(True)
         tableView.setSelectionMode(QAbstractItemView.ExtendedSelection)
