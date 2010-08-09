@@ -24,6 +24,7 @@ class TagLabel(QLabel):
         event.accept()
     
     def dropEvent(self, event):
+        self.set_bg(False)
         print "Droppato!"
         event.accept()
     

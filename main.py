@@ -46,10 +46,10 @@ class MainWindow(QMainWindow):
         taglistDockWidget = QDockWidget("Lista Tag:",self)
         taglistDockWidget.setObjectName("taglistDockWidget")
         taglistDockWidget.setAllowedAreas(Qt.LeftDockWidgetArea|Qt.RightDockWidgetArea)
-        #self.listTag = ListTagWidget(self)
-        #taglistDockWidget.setWidget(self.listTag)
-        buttontest = TagLabel("Test", "red", self)
-        taglistDockWidget.setWidget(buttontest)
+        self.listTag = ListTagWidget(self)
+        taglistDockWidget.setWidget(self.listTag)
+        #buttontest = TagLabel("Test", "red", self)
+        #taglistDockWidget.setWidget(buttontest)
         self.addDockWidget(Qt.LeftDockWidgetArea, taglistDockWidget)
     
     #Metodo per la creazione rapida di azioni   
@@ -114,8 +114,8 @@ class ListTagWidget(QWidget):
             self.listWidget = QListWidget()
             self.listWidget.setSelectionMode(QAbstractItemView.NoSelection)
             self.listWidget.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-            self.listWidget.setAcceptDrops(True)
-            self.listWidget.setDropIndicatorShown(True)
+            #self.listWidget.setAcceptDrops(True)
+            #self.listWidget.setDropIndicatorShown(True)
             #Creazione Layout
             layout = QGridLayout(self)
             layout.addWidget(self.listWidget, 1, 1, 1, 1)

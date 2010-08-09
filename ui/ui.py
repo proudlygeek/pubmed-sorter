@@ -35,7 +35,7 @@ class AddTagDlg(QDialog):
         
     #Riscrittura per validazione Post-mortem
     def accept(self):
-        item = CustomItem()
+        item = QListWidgetItem()
         itemLabel = TagLabel(self.lineEdit.text(), self.color.name(), self)
         self.list.addItem(item)
         self.list.setItemWidget(item, itemLabel)
