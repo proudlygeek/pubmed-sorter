@@ -7,28 +7,42 @@ class TagLabel(QLabel):
         super(TagLabel, self).__init__(parent)
         self.setText(text)
         #Salvo il CSS dell'elemento
-        self.defaultStyle = self.setStyleSheet("QLabel { background-color: %s; font-size: 14pt; }" % color)
+        self.setStyleSheet("QLabel { background-color: %s; font-size: 14pt; }" % color)
+        self.defaultStyle = self.styleSheet()
         self.setAlignment(Qt.AlignHCenter|Qt.AlignVCenter)
         self.setAcceptDrops(True)
-        
-    def dragEventEnter(self, event):
+
+    def dragEnterEvent(self, event):
         if event.mimeData().hasFormat("application/pubmedrecord"):
             self.set_bg(True)
             event.accept()
         else:
             event.reject()
-        print "Drag Queen!"
+    
+    def dragLeaveEvent(self, event):
+        self.set_bg(False)
+        event.accept()
     
     def dropEvent(self, event):
         print "Droppato!"
         event.accept()
     
+    def enterEvent(self, event):
+        #self.set_bg(True)
+        #event.accept()
+        pass
+        
+    def leaveEvent(self, event):
+        #self.set_bg(False)
+        #event.accept()
+        pass
+    
     def set_bg(self, active = False):
         if active:
             style = "background: yellow"
+            self.setStyleSheet(style)
         else:
-            style = self.defaultStyle
-        self.setStyleSheet(val)
+            self.setStyleSheet(self.defaultStyle)
 
 
 
