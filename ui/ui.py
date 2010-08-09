@@ -2,6 +2,7 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from colorbutton import ColorButton
 from taglabel import TagLabel
+from classes.customitem import CustomItem
 
 class AddTagDlg(QDialog):
     def __init__(self, list, parent=None):
@@ -34,7 +35,7 @@ class AddTagDlg(QDialog):
         
     #Riscrittura per validazione Post-mortem
     def accept(self):
-        item = QListWidgetItem()
+        item = CustomItem()
         itemLabel = TagLabel(self.lineEdit.text(), self.color.name(), self)
         self.list.addItem(item)
         self.list.setItemWidget(item, itemLabel)

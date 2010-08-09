@@ -10,7 +10,7 @@ class TagLabel(QLabel):
         self.defaultStyle = self.setStyleSheet("QLabel { background-color: %s; font-size: 14pt; }" % color)
         self.setAlignment(Qt.AlignHCenter|Qt.AlignVCenter)
         self.setAcceptDrops(True)
-    
+        
     def dragEventEnter(self, event):
         if event.mimeData().hasFormat("application/pubmedrecord"):
             self.set_bg(True)

@@ -6,6 +6,7 @@ from PyQt4.QtGui import *
 from core.utils import loadFile
 from ui.ui import *
 from views.dragtable import DragTable
+from ui.taglabel import TagLabel
 
 __version__="0.1.3"
 
@@ -45,8 +46,10 @@ class MainWindow(QMainWindow):
         taglistDockWidget = QDockWidget("Lista Tag:",self)
         taglistDockWidget.setObjectName("taglistDockWidget")
         taglistDockWidget.setAllowedAreas(Qt.LeftDockWidgetArea|Qt.RightDockWidgetArea)
-        self.listTag = ListTagWidget(self)
-        taglistDockWidget.setWidget(self.listTag)
+        #self.listTag = ListTagWidget(self)
+        #taglistDockWidget.setWidget(self.listTag)
+        buttontest = TagLabel("Test", "red", self)
+        taglistDockWidget.setWidget(buttontest)
         self.addDockWidget(Qt.LeftDockWidgetArea, taglistDockWidget)
     
     #Metodo per la creazione rapida di azioni   
@@ -112,6 +115,7 @@ class ListTagWidget(QWidget):
             self.listWidget.setSelectionMode(QAbstractItemView.NoSelection)
             self.listWidget.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
             self.listWidget.setAcceptDrops(True)
+            self.listWidget.setDropIndicatorShown(True)
             #Creazione Layout
             layout = QGridLayout(self)
             layout.addWidget(self.listWidget, 1, 1, 1, 1)
