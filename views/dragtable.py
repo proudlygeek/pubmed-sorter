@@ -30,13 +30,28 @@ class DragTable(QTableView):
         #animazione drag
         drag = QDrag(self)
         drag.setMimeData(mimeData)
+        #pixmap = QPixmap(400, 400)
+        #pixmap.fill(Qt.transparent)
         pixmap = QPixmap(":/drag.png")
-        pixmap = pixmap.scaled(QSize(100, 100))
+
+        #p = QPainter(pixmap)
+        #p.setRenderHint(QPainter.Antialiasing)
+        #p.setBrush(Qt.white)
+        #p.setBackgroundMode(Qt.TransparentMode)
+        #pen = QPen(Qt.DashLine)
+        #pen.setWidth(3)
+        #pen.setColor(QColor("Grey"))
+        #pen.setCapStyle(Qt.RoundCap)
+        #p.setPen(pen)
+        #rectangle = QRectF(30, 30, 100, 100)
+        #p.drawRoundedRect(rectangle, 15.0, 15.0)
+        #pixmap = QPixmap(":/drag.png")
+        #pixmap = pixmap.scaled(QSize(100, 100))
         #pixmap = QPixmap(200, 200)
         #pixmap.fill(QColor("orange"))
         
 
-        drag.setHotSpot(QPoint(pixmap.width()/2, pixmap.height()/2))
+        drag.setHotSpot(QPoint(pixmap.width()-100, pixmap.height()-100))
         drag.setPixmap(pixmap)
         result = drag.start(Qt.MoveAction)
     
