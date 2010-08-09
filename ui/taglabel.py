@@ -1,6 +1,7 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
+
 class TagLabel(QLabel):
     def __init__(self, text, color, parent = None):
         super(TagLabel, self).__init__(parent)

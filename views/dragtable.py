@@ -2,6 +2,7 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 import cPickle
 import pickle
+import os
 
 class DragTable(QTableView):
     def __init__(self, parent = None):
@@ -29,10 +30,11 @@ class DragTable(QTableView):
         #animazione drag
         drag = QDrag(self)
         drag.setMimeData(mimeData)
-        pixmap = QPixmap()
-        #pixmap.grabWidget(self, self.visualRect(index))
-        pixmap = QPixmap(100, self.height()/2)
-        pixmap.fill(QColor("orange"))
+        pixmap = QPixmap(":/drag.png")
+        pixmap = pixmap.scaled(QSize(100, 100))
+        #pixmap = QPixmap(200, 200)
+        #pixmap.fill(QColor("orange"))
+        
 
         drag.setHotSpot(QPoint(pixmap.width()/2, pixmap.height()/2))
         drag.setPixmap(pixmap)

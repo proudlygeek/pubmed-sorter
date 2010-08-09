@@ -1,10 +1,12 @@
 import sys
 import os.path
+import qrc_resources
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from core.utils import loadFile
 from ui.ui import *
 from views.dragtable import DragTable
+
 __version__="0.1.3"
 
 class MainWindow(QMainWindow):
