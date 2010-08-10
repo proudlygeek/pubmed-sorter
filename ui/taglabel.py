@@ -15,11 +15,7 @@ class TagLabel(QLabel):
         self.setAlignment(Qt.AlignHCenter|Qt.AlignVCenter)
         self.setAcceptDrops(True)
         #Connessioni
-        self.connect(self, SIGNAL("dropAccepted(PyQt_PyObject)"), self.dummyMsg)
-    
-    def dummyMsg(self, item):
-        print "Tupla Oggetto:"
-        print item
+        #self.connect(self, SIGNAL("dropAccepted(PyQt_PyObject)"), self.dummyMsg)
 
     def dragEnterEvent(self, event):
         if event.mimeData().hasFormat("application/pubmedrecord"):
@@ -43,6 +39,7 @@ class TagLabel(QLabel):
         print selected
         event.accept()
         self.emit(SIGNAL("dropAccepted(PyQt_PyObject)"), (selected, str(self.text()), str(self.tagColor)))
+        
         
     
     def enterEvent(self, event):

@@ -40,7 +40,7 @@ class AddTagDlg(QDialog):
         self.list.addItem(item)
         self.list.setItemWidget(item, itemLabel)
         QDialog.accept(self)
-
+    
     def chooseColorDlg(self):
         dialog = QColorDialog(self)
         #Connessioni

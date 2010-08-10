@@ -8,7 +8,8 @@ from ui.ui import *
 from views.dragtable import DragTable
 from ui.taglabel import TagLabel
 
-__version__="0.1.3"
+__version__="0.1.4"
+__license__="LGPL VERSION 3.0"
 
 class MainWindow(QMainWindow):
     def __init__(self, Parent = None):
@@ -81,12 +82,12 @@ class MainWindow(QMainWindow):
         if os.path.isfile(self.fileInput):
             dataToLoad = loadFile(self.fileInput.replace("\r"," "))
             #Aggiungo il campo per i tag alla struttura dati (conversione a lista)
-            dataWithTagsField = [list(line) for line in dataToLoad]
-            for line in dataWithTagsField:
+            self.dataWithTagsField = [list(line) for line in dataToLoad]
+            for line in self.dataWithTagsField:
                 #Inizializza i tag con il simbolo "meno"
                 line.append('-')
             self.fullScreen()
-            centralWidget = CentralWidget(dataWithTagsField, self)
+            centralWidget = CentralWidget(self.dataWithTagsField, self)
             self.setCentralWidget(centralWidget)
             self.createDock()
             self.status.showMessage("%s caricato." % self.fileInput,5000)
@@ -165,6 +166,12 @@ class CentralWidget(QWidget):
         tableView.setSelectionMode(QAbstractItemView.ExtendedSelection)
         tableView.setSelectionBehavior(QAbstractItemView.SelectRows)
         return tableView
+        #Connessioni
+        self.connect(itemLabel, SIGNAL("dropAccepted(PyQt_PyObject)"), self.dummyMsg)
+        
+    def dummyMsg(self, item):
+        print "Tupla Oggetto:"
+        print item
         
 
 
