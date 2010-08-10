@@ -104,6 +104,11 @@ class MainWindow(QMainWindow):
     def fullScreen(self):
         screen = QDesktopWidget().screenGeometry()
         self.resize(screen.width(), screen.height())
+    
+    def dummyMsg(self, item):
+        print "Tupla Oggetto:"
+        print item
+    
         
 class ListTagWidget(QWidget):
         def __init__(self, parent = None):
@@ -166,14 +171,6 @@ class CentralWidget(QWidget):
         tableView.setSelectionMode(QAbstractItemView.ExtendedSelection)
         tableView.setSelectionBehavior(QAbstractItemView.SelectRows)
         return tableView
-        #Connessioni
-        self.connect(itemLabel, SIGNAL("dropAccepted(PyQt_PyObject)"), self.dummyMsg)
-        
-    def dummyMsg(self, item):
-        print "Tupla Oggetto:"
-        print item
-        
-
 
 #Classe Tabella Abstract (Mapping diretto tra struttura dati e tabella)
 class pubmedTableList(QAbstractTableModel):
