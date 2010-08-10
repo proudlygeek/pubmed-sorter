@@ -190,7 +190,7 @@ class pubmedTableList(QAbstractTableModel):
             return item
         #Nel caso di drag and drop ritorna direttamente la riga contenente il record
         elif role == Qt.UserRole:
-            item = self.publication[index.row()]
+            item = self.publication[index.row()][0]
             return item
         return QVariant()
     

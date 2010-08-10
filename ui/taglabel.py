@@ -1,13 +1,16 @@
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
+import pickle
 
 
 class TagLabel(QLabel):
     def __init__(self, text, color, parent = None):
         super(TagLabel, self).__init__(parent)
+        #Un tag possiede testo e colore
+        self.tagColor = color
         self.setText(text)
         #Salvo il CSS dell'elemento
-        self.setStyleSheet("QLabel { background-color: %s; font-size: 14pt; }" % color)
+        self.setStyleSheet("QLabel { background-color: %s; font-size: 14pt; }" % self.tagColor)
         self.defaultStyle = self.styleSheet()
         self.setAlignment(Qt.AlignHCenter|Qt.AlignVCenter)
         self.setAcceptDrops(True)
@@ -25,7 +28,14 @@ class TagLabel(QLabel):
     
     def dropEvent(self, event):
         self.set_bg(False)
-        print "Droppato!"
+        print ("Nome tag: %s" %self.text())
+        print ("Colore tag: %s" % self.tagColor)
+        data = event.mimeData()
+        bstream = data.retrieveData("application/pubmedrecord", QVariant.ByteArray)
+        print bstream.isValid()
+        selected = pickle.loads(bstream.toByteArray())
+        print selected
+        
         event.accept()
     
     def enterEvent(self, event):
@@ -40,7 +50,7 @@ class TagLabel(QLabel):
     
     def set_bg(self, active = False):
         if active:
-            style = "background: yellow"
+            style = "QLabel {background: yellow; font-size: 14pt;}"
             self.setStyleSheet(style)
         else:
             self.setStyleSheet(self.defaultStyle)

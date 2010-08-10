@@ -51,7 +51,7 @@ class DragTable(QTableView):
         #pixmap.fill(QColor("orange"))
         
 
-        drag.setHotSpot(QPoint(pixmap.width()-100, pixmap.height()-100))
+        drag.setHotSpot(QPoint(pixmap.width()/3, pixmap.height()/3))
         drag.setPixmap(pixmap)
         result = drag.start(Qt.MoveAction)
     
