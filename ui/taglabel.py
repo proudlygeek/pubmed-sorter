@@ -16,7 +16,7 @@ class TagLabel(QLabel):
         self.setAcceptDrops(True)
         #print self.parent().parent().parent().parent()
         #Connessioni
-        self.connect(self, SIGNAL("dropAccepted(PyQt_PyObject)"), self.parent().parent().parent().parent().dummyMsg)
+        self.connect(self, SIGNAL("dropAccepted(PyQt_PyObject)"), self.parent().parent().parent().parent().centralWidget.tableList.updateData)
 
     def dragEnterEvent(self, event):
         if event.mimeData().hasFormat("application/pubmedrecord"):

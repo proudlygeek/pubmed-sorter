@@ -87,8 +87,8 @@ class MainWindow(QMainWindow):
                 #Inizializza i tag con il simbolo "meno"
                 line.append('-')
             self.fullScreen()
-            centralWidget = CentralWidget(self.dataWithTagsField, self)
-            self.setCentralWidget(centralWidget)
+            self.centralWidget = CentralWidget(self.dataWithTagsField, self)
+            self.setCentralWidget(self.centralWidget)
             self.createDock()
             self.status.showMessage("%s caricato." % self.fileInput,5000)
     
@@ -108,6 +108,7 @@ class MainWindow(QMainWindow):
     def dummyMsg(self, item):
         print "Tupla Oggetto:"
         print item
+        
     
         
 class ListTagWidget(QWidget):
