@@ -197,6 +197,10 @@ class pubmedTableList(QAbstractTableModel):
         elif role == Qt.UserRole:
             item = self.publication[index.row()][0]
             return item
+        
+        elif role == "NoRow":
+            item = self.publication[index][0]
+            return item
         return QVariant()
     
     
