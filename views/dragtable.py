@@ -3,11 +3,13 @@ from PyQt4.QtGui import *
 import cPickle
 import pickle
 import os
+from delegates import TaggedDelegate
 
 class DragTable(QTableView):
     def __init__(self, parent = None):
         super(DragTable, self).__init__(parent)
         self.setDragEnabled(True)
+        self.setItemDelegateForColumn(2, TaggedDelegate(self))
     
     def dragEnterEvent(self, event):
         if event.mimeData().hasFormat("application/pubmedrecord"):
@@ -61,7 +63,8 @@ class DragTable(QTableView):
 
     def updateData(self, item):
         print item
-        print self.model().data(item[0], "NoRow")
+        #print self.model().data(item[0], "NoRow")
+        self.model().setData(item[0], item[1], "NoRow")
         
         
         

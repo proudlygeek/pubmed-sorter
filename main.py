@@ -199,9 +199,17 @@ class pubmedTableList(QAbstractTableModel):
             return item
         
         elif role == "NoRow":
-            item = self.publication[index][0]
+            item = self.publication[index][3]
             return item
         return QVariant()
+        
+    def setData(self, index, value, role):
+        if role == "NoRow":
+            self.publication[index][3] = value
+            self.emit(SIGNAL("dataChanged()"))
+            return True
+        else:
+            return False
     
     
     def headerData(self, col, orientation, role):
