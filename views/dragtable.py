@@ -60,7 +60,7 @@ class DragTable(QTableView):
         self.startDrag(event)
 
     def updateData(self, item):
-        print item
+        print self.model().data(item[0], Qt.UserRole)
 
         
         
