@@ -20,8 +20,9 @@ class DragTable(QTableView):
         index = self.indexAt(event.pos())
         if not index.isValid():
             return
-        print str(event.pos())
-        selected = self.model().data(index, Qt.UserRole)
+        
+        #selected = self.model().data(index, Qt.UserRole)
+        selected = index.row()
         #Conversione a ByteStream
         bstream = cPickle.dumps(selected)
         #print pickle.loads(bstream).data()
@@ -59,7 +60,7 @@ class DragTable(QTableView):
         self.startDrag(event)
 
     def updateData(self, item):
-        print ("Che minchia di giro!")
+        print item
 
         
         
