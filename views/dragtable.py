@@ -22,6 +22,7 @@ class DragTable(QTableView):
             event.ignore()
     
     def startDrag(self, event):
+        print type(event)
         index = self.indexAt(event.pos())
         if not index.isValid():
             return
