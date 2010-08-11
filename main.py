@@ -197,9 +197,9 @@ class pubmedTableList(QAbstractTableModel):
         elif role == Qt.UserRole:
             item = self.publication[index.row()][0]
             return item
-        
-        elif role == "NoRow":
-            item = self.publication[index][3]
+        #Ruolo del delegato
+        elif role == "ColorRow":
+            item = self.publication[index.row()][3]
             return item
         return QVariant()
         

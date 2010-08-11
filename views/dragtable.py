@@ -9,7 +9,7 @@ class DragTable(QTableView):
     def __init__(self, parent = None):
         super(DragTable, self).__init__(parent)
         self.setDragEnabled(True)
-        self.setItemDelegateForColumn(2, TaggedDelegate(self))
+        self.setItemDelegateForColumn(3, TaggedDelegate(self))
     
     def dragEnterEvent(self, event):
         if event.mimeData().hasFormat("application/pubmedrecord"):
