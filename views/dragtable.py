@@ -22,13 +22,21 @@ class DragTable(QTableView):
             event.ignore()
     
     def startDrag(self, event):
-        print type(event)
-        index = self.indexAt(event.pos())
-        if not index.isValid():
-            return
+        #index = self.indexAt(event.pos())
+        #if not index.isValid():
+        #    return
+        indices = self.selectedIndexes()
+        selected = set()
+        
+        print indices
+        
+        for index in indices:
+            selected.add(index.row())
+        
+        #print selected
         
         #selected = self.model().data(index, Qt.UserRole)
-        selected = index.row()
+        #selected = index.row()
         #Conversione a ByteStream
         bstream = cPickle.dumps(selected)
         #print pickle.loads(bstream).data()
