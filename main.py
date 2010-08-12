@@ -7,6 +7,7 @@ from core.utils import loadFile
 from ui.ui import *
 from views.dragtable import DragTable
 from ui.taglabel import TagLabel
+from classes.customlist import CustomList
 
 __version__="0.1.4"
 __license__="LGPL VERSION 3.0"
@@ -118,9 +119,7 @@ class ListTagWidget(QWidget):
             addButton = QPushButton("&Aggiungi Tag...")
             editButton = QPushButton("&Modifica Tag...")
             removeButton = QPushButton("&Rimuovi Tag")
-            self.listWidget = QListWidget()
-            #self.listWidget.setSelectionMode(QAbstractItemView.NoSelection)
-            self.listWidget.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+            self.listWidget = CustomList(self)
             #Creazione Layout
             layout = QGridLayout(self)
             layout.addWidget(self.listWidget, 1, 1, 1, 1)
@@ -141,7 +140,7 @@ class ListTagWidget(QWidget):
                 
         def delTag(self):
             item = self.listWidget.itemWidget(self.listWidget.currentItem()).text()
-            print item
+            #print item
             if item:
                 msgBox = QMessageBox(self)
                 msgBox.setText("Sei sicuro di voler eliminare il tag ""%s""?" % item)
@@ -164,7 +163,7 @@ class ListTagWidget(QWidget):
                 item.setSizeHint(QSize(item.sizeHint().width(), size.height()/(self.listWidget.count()) ))
                 #item.setAcceptDrops(True)
                 #item.setDropIndicatorShown(True)
-            
+
 class CentralWidget(QWidget):
     def __init__(self, data, Parent=None):
         super(CentralWidget, self).__init__()
