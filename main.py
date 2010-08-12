@@ -112,8 +112,9 @@ class MainWindow(QMainWindow):
         
     def generateFiles(self):
         print "Generazione dei file..."
+        print self.listTag.listWidget.count()
         for item in self.dataWithTagsField:
-            print item[3]
+            pass
         
     
         
