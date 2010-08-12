@@ -130,6 +130,7 @@ class ListTagWidget(QWidget):
             self.adjustSize()
             #Connessioni
             self.connect(addButton, SIGNAL("clicked()"), self.addTag)
+            self.connect(editButton, SIGNAL("clicked()"), self.editTag)
             self.connect(removeButton, SIGNAL("clicked()"), self.delTag)
         
         def addTag(self):
@@ -137,6 +138,11 @@ class ListTagWidget(QWidget):
             dialog.show()
             if dialog.exec_():
                 self.refreshSizeItems()
+                
+        def editTag(self):
+            dialog = EditTagDlg(self.listWidget, self)
+            if dialog.exec_():
+                pass
                 
         def delTag(self):
             item = self.listWidget.itemWidget(self.listWidget.currentItem()).text()

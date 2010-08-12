@@ -13,7 +13,7 @@ class AddTagDlg(QDialog):
         #Creazione elementi dialog
         buttonBox = QDialogButtonBox(QDialogButtonBox.Ok|QDialogButtonBox.Cancel)
         self.colorPickerButton = ColorButton()
-        self.colorPickerButton.setColor(QColor("red"))
+        self.colorPickerButton.setColor(self.color)
         labelTag = QLabel("Nome &Tag:")
         self.lineEdit = QLineEdit()
         labelTag.setBuddy(self.lineEdit)
@@ -27,7 +27,7 @@ class AddTagDlg(QDialog):
         grid.addWidget(self.colorPickerButton, 1, 1)
         grid.addWidget(buttonBox, 2, 0, 1, 2)
         self.setLayout(grid)
-        self.setWindowTitle("Aggiungi Tag...")
+        self.setWindowTitle("Aggiungi Tag")
         #Connessioni
         self.connect(buttonBox, SIGNAL("accepted()"), self, SLOT("accept()"))
         self.connect(buttonBox, SIGNAL("rejected()"), self, SLOT("reject()"))
@@ -50,4 +50,14 @@ class AddTagDlg(QDialog):
     def setColor(self, color):
         self.color = color
         self.colorPickerButton.setColor(color)
+
+class EditTagDlg(AddTagDlg):
+    def __init__(self, list, parent = None):
+        super(EditTagDlg, self).__init__(parent)
+        #Prende il widget associato all'oggetto (QLabel)
+        itemWidget = list.itemWidget(list.currentItem())
+        self.setWindowTitle("Modifica Tag")
+        self.setColor(QColor(itemWidget.tagColor))
+        self.lineEdit.setText(itemWidget.text())
+        self.lineEdit.selectAll()
 
