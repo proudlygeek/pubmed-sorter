@@ -168,14 +168,9 @@ class ListTagWidget(QWidget):
         
         def enableEditDel(self, index):
             if index != -1:
-                labelPlus = self.listWidget.itemWidget(self.listWidget.item(index)).text()
-                self.editButton.setText("&Modifica '%s'..." % labelPlus)
-                self.removeButton.setText("&Rimuovi '%s'" % labelPlus)
                 self.editButton.setEnabled(True)
                 self.removeButton.setEnabled(True)
             else:
-                self.editButton = QPushButton("Modifica...")
-                self.removeButton = QPushButton("Rimuovi...")
                 self.editButton.setEnabled(False)
                 self.removeButton.setEnabled(False)
 
