@@ -58,16 +58,36 @@ class EditTagDlg(AddTagDlg):
         super(EditTagDlg, self).__init__(list, parent)
         #Prende il widget associato all'oggetto (QLabel)
         itemWidget = list.itemWidget(list.currentItem())
+        self.index = list.currentRow()
         self.item = itemWidget
         self.setWindowTitle("Modifica Tag")
         self.setColor(QColor(itemWidget.tagColor))
         self.lineEdit.setText(itemWidget.text())
         self.lineEdit.selectAll()
+        print ("Colore Attuale: %s" % self.color.name())
+        self.oldColor = self.color
         
     def accept(self):
+        
+        changedIndexList = list()
+        colorDict = self.parent().parent().parent().centralWidget.tableList.colorDict
+        
+        #Devo cambiare anche il dizionario della tabella
+        print colorDict
+        
+        for key in colorDict:
+            if colorDict[key] == self.oldColor.name():
+                changedIndexList.append(key)
+                
+        print changedIndexList
+        
+        for index in changedIndexList:
+            self.parent().parent().parent().centralWidget.tableList.colorDict[index] = self.color.name()
+        
         self.item.setText(self.lineEdit.text())
-        print self.color
         self.item.setColor(self.color.name())
+    
+        #self.parent().listWidget.colorDict[self.index] 
         QDialog.accept(self)
         
 

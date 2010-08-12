@@ -172,8 +172,8 @@ class ListTagWidget(QWidget):
                 #item.setDropIndicatorShown(True)
 
 class CentralWidget(QWidget):
-    def __init__(self, data, Parent=None):
-        super(CentralWidget, self).__init__()
+    def __init__(self, data, parent=None):
+        super(CentralWidget, self).__init__(parent)
         self.data = data
         self.tableList = self.createTable()
     
