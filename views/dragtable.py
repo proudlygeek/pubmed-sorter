@@ -28,8 +28,6 @@ class DragTable(QTableView):
         indices = self.selectedIndexes()
         selected = set()
         
-        print indices
-        
         for index in indices:
             selected.add(index.row())
         
@@ -77,13 +75,9 @@ class DragTable(QTableView):
         print item
         #print self.model().data(item[0], "NoRow")
         self.model().setData(item[0], item[1], "NoRow")
-        #print ("Last Tag Color: %s" % self.lastTagColor)
         #Aggiorna il dizionario dei colori
-        self.colorDict[item[0]] = item[2]
+        for element in item[0]:
+            self.colorDict[element] = item[2]
         
-        
-        
-        
-        
-        
-
+        self.reset()
+        self.resizeColumnToContents(3)

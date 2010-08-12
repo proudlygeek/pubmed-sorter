@@ -8,7 +8,7 @@ class TaggedDelegate(QStyledItemDelegate):
     def paint(self, painter, option, index):
         text = index.model().data(index, "ColorRow")
         document = QTextDocument()
-        document.setDefaultFont(option.font)
+        document.setDefaultFont(option.font)        
         document.setHtml(text)
         if text == "-":
             colorTag = QColor("White")

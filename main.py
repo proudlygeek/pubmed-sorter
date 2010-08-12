@@ -171,6 +171,7 @@ class CentralWidget(QWidget):
         hh.setStretchLastSection(True)
         tableView.setSelectionMode(QAbstractItemView.ExtendedSelection)
         tableView.setSelectionBehavior(QAbstractItemView.SelectRows)
+        tableView.resizeColumnToContents(3)
         return tableView
 
 #Classe Tabella Abstract (Mapping diretto tra struttura dati e tabella)
@@ -201,11 +202,18 @@ class pubmedTableList(QAbstractTableModel):
         elif role == "ColorRow":
             item = self.publication[index.row()][3]
             return item
+        
+        elif role == Qt.TextAlignmentRole and index.column() == 3:
+            return (Qt.AlignRight | Qt.AlignVCenter)
+            
         return QVariant()
         
     def setData(self, index, value, role):
         if role == "NoRow":
-            self.publication[index][3] = value
+            #Essendo una selezione multipla ho un insieme da scorrere
+            for element in index:
+                self.publication[element][3] = value
+                
             self.emit(SIGNAL("dataChanged()"))
             return True
         else:
