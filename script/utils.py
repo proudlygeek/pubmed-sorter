@@ -96,6 +96,9 @@ def loadFile(inputFile, mixedMode = False):
     result = zip(dataDict.values(), dataDict.keys())
     return result
 
+def loadFromGUI(self, data):
+    pass
+
 def main(argv):
     if not argv:
         usage()
@@ -174,7 +177,7 @@ def main(argv):
     else:
         result = sorted(dataAndKeys, key = descyear_descmonth_ascauth)
     
-    #Esporta i risultati ordinatihttp://docs.python.org/tutorial/errors.html
+    #Esporta i risultati ordinati http://docs.python.org/tutorial/errors.html
     printOutput(result, outputFile)
     
 if __name__ == "__main__":

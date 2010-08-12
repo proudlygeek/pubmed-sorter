@@ -78,15 +78,14 @@ class EditTagDlg(AddTagDlg):
         for key in colorDict:
             if colorDict[key] == self.oldColor.name():
                 changedIndexList.append(key)
-                
-        print changedIndexList
-        
+                        
         for index in changedIndexList:
             self.parent().parent().parent().centralWidget.tableList.colorDict[index] = self.color.name()
-        
+            
+        self.parent().parent().parent().centralWidget.tableList.model().setData(changedIndexList, self.lineEdit.text(), "NoRow" )
         self.item.setText(self.lineEdit.text())
         self.item.setColor(self.color.name())
-    
+        self.parent().parent().parent().centralWidget.tableList.resizeColumnToContents(3)    
         #self.parent().listWidget.colorDict[self.index] 
         QDialog.accept(self)
         

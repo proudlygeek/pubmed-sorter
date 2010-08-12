@@ -112,27 +112,43 @@ class MainWindow(QMainWindow):
         
     def generateFiles(self):
         print "Generazione dei file..."
-        nfiles = self.listTag.listWidget.count()
-        
         tagsList = list()
         for item in self.dataWithTagsField:
             tagsList.append(item[3])
         
         tagsList = list(set(tagsList))
         
-        print tagsList
+        nfiles = len(tagsList)
 
         msgBox = QMessageBox(self)
         msgBox.setWindowTitle("Conferma Generazione File")
+        
         if nfiles > 1:
-            fileStr = "Verranno generati %d files:\n" % nfiles
+            fileStr = """Verranno generati <b>%d</b> files:
+                      <ul>""" % nfiles
+            for tag in tagsList:
+                if tag == '-':
+                    fileStr+="""<li><p>notag.txt</p></li>"""
+                else:
+                    fileStr+="""<li><p>%s.txt</p></li>""" % tag
+            fileStr+="""</ul>"""
         else:
-            fileStr = "Verra' generato un solo file:\n"
+            fileStr = """Verra' generato <b>un solo</b> file:"""
+            
+            if tagsList[0] == '-':
+                fileStr+="""<p>NoTag.txt</p>"""
+            else:
+                fileStr+="""<p>%s.txt</p>""" % tagsList[0]
+                
+        fileStr+="""<b>Vuoi continuare?</b>"""
             
         msgBox.setText(fileStr)
         msgBox.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
         msgBox.setIcon(QMessageBox.Question)
-        msgBox.exec_()
+        result = msgBox.exec_()
+        
+        if result == QMessageBox.Ok:
+            
 
         
         
