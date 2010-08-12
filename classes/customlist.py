@@ -8,5 +8,4 @@ class CustomList(QListWidget):
         self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
     
     def wheelEvent(self, event):
-            print type(event)
             event.ignore()

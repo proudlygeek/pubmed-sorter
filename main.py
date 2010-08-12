@@ -117,21 +117,24 @@ class ListTagWidget(QWidget):
             super(ListTagWidget, self).__init__(parent)
             #Creazione componenti
             addButton = QPushButton("&Aggiungi Tag...")
-            editButton = QPushButton("&Modifica Tag...")
-            removeButton = QPushButton("&Rimuovi Tag")
+            self.editButton = QPushButton("&Modifica Tag...")
+            self.removeButton = QPushButton("&Rimuovi Tag")
+            self.editButton.setEnabled(False)
+            self.removeButton.setEnabled(False)
             self.listWidget = CustomList(self)
             #Creazione Layout
             layout = QGridLayout(self)
             layout.addWidget(self.listWidget, 1, 1, 1, 1)
             layout.addWidget(addButton, 2, 1)
-            layout.addWidget(editButton, 3, 1)
-            layout.addWidget(removeButton, 4, 1)
+            layout.addWidget(self.editButton, 3, 1)
+            layout.addWidget(self.removeButton, 4, 1)
             self.setLayout(layout)
             self.adjustSize()
             #Connessioni
             self.connect(addButton, SIGNAL("clicked()"), self.addTag)
-            self.connect(editButton, SIGNAL("clicked()"), self.editTag)
-            self.connect(removeButton, SIGNAL("clicked()"), self.delTag)
+            self.connect(self.editButton, SIGNAL("clicked()"), self.editTag)
+            self.connect(self.removeButton, SIGNAL("clicked()"), self.delTag)
+            self.connect(self.listWidget, SIGNAL("currentRowChanged(int)"), self.enableEditDel)
         
         def addTag(self):
             dialog = AddTagDlg(self.listWidget, self)
@@ -162,6 +165,19 @@ class ListTagWidget(QWidget):
                 
                 elif result == QMessageBox.Cancel:
                     return
+        
+        def enableEditDel(self, index):
+            if index != -1:
+                labelPlus = self.listWidget.itemWidget(self.listWidget.item(index)).text()
+                self.editButton.setText("&Modifica '%s'..." % labelPlus)
+                self.removeButton.setText("&Rimuovi '%s'" % labelPlus)
+                self.editButton.setEnabled(True)
+                self.removeButton.setEnabled(True)
+            else:
+                self.editButton = QPushButton("Modifica...")
+                self.removeButton = QPushButton("Rimuovi...")
+                self.editButton.setEnabled(False)
+                self.removeButton.setEnabled(False)
 
         def refreshSizeItems(self):
             size = self.listWidget.size()
