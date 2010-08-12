@@ -5,7 +5,7 @@ from taglabel import TagLabel
 from classes.customitem import CustomItem
 
 class AddTagDlg(QDialog):
-    def __init__(self, list, parent=None):
+    def __init__(self, list, parent = None):
         super(AddTagDlg, self).__init__(parent)
         self.setModal(True)
         self.list = list
@@ -33,6 +33,8 @@ class AddTagDlg(QDialog):
         self.connect(buttonBox, SIGNAL("rejected()"), self, SLOT("reject()"))
         self.connect(self.colorPickerButton, SIGNAL("clicked()"), self.chooseColorDlg)
         
+        #print self.parent()
+        
     #Riscrittura per validazione Post-mortem
     def accept(self):
         item = QListWidgetItem()
@@ -53,11 +55,19 @@ class AddTagDlg(QDialog):
 
 class EditTagDlg(AddTagDlg):
     def __init__(self, list, parent = None):
-        super(EditTagDlg, self).__init__(parent)
+        super(EditTagDlg, self).__init__(list, parent)
         #Prende il widget associato all'oggetto (QLabel)
         itemWidget = list.itemWidget(list.currentItem())
+        self.item = itemWidget
         self.setWindowTitle("Modifica Tag")
         self.setColor(QColor(itemWidget.tagColor))
         self.lineEdit.setText(itemWidget.text())
         self.lineEdit.selectAll()
+        
+    def accept(self):
+        self.item.setText(self.lineEdit.text())
+        print self.color
+        self.item.setColor(self.color.name())
+        QDialog.accept(self)
+        
 

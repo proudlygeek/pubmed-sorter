@@ -141,6 +141,7 @@ class ListTagWidget(QWidget):
                 
         def editTag(self):
             dialog = EditTagDlg(self.listWidget, self)
+            dialog.show()
             if dialog.exec_():
                 pass
                 

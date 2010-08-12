@@ -9,8 +9,8 @@ class TagLabel(QLabel):
         #Un tag possiede testo e colore
         self.tagColor = color
         self.setText(text)
-        #Salvo il CSS dell'elemento
-        self.setStyleSheet("QLabel { background-color: %s; font-size: 14pt; }" % self.tagColor)
+        #Cambio il colore
+        self.setColor(self.tagColor)
         self.defaultStyle = self.styleSheet()
         self.setAlignment(Qt.AlignHCenter|Qt.AlignVCenter)
         self.setAcceptDrops(True)
@@ -59,6 +59,6 @@ class TagLabel(QLabel):
             self.setStyleSheet(style)
         else:
             self.setStyleSheet(self.defaultStyle)
-
-
-
+            
+    def setColor(self, color):
+        self.setStyleSheet("QLabel { background-color: %s; font-size: 14pt; }" % color)
