@@ -110,6 +110,11 @@ class MainWindow(QMainWindow):
         print "Tupla Oggetto:"
         print item
         
+    def generateFiles(self):
+        print "Generazione dei file..."
+        for item in self.dataWithTagsField:
+            print item[3]
+        
     
         
 class ListTagWidget(QWidget):
@@ -191,8 +196,10 @@ class CentralWidget(QWidget):
     #Creazione della tabella
     def createTable(self):
         tableView = DragTable()
+        generateButton = QPushButton("&Genera File(s)")
         layout = QVBoxLayout()
         layout.addWidget(tableView)
+        layout.addWidget(generateButton)
         self.setLayout(layout)
         header = ['#','Dati','PMID','Tag']
         tableModel = pubmedTableList(self.data, header, self)
@@ -205,8 +212,14 @@ class CentralWidget(QWidget):
         hh.setStretchLastSection(True)
         tableView.setSelectionMode(QAbstractItemView.ExtendedSelection)
         tableView.setSelectionBehavior(QAbstractItemView.SelectRows)
+        tableView.resizeColumnToContents(0)
+        tableView.resizeColumnToContents(2)
         tableView.resizeColumnToContents(3)
+        print self.parent()
+        #Connessioni
+        self.connect(generateButton, SIGNAL("clicked()"), self.parent().generateFiles)
         return tableView
+        
 
 #Classe Tabella Abstract (Mapping diretto tra struttura dati e tabella)
 class pubmedTableList(QAbstractTableModel):
