@@ -119,10 +119,8 @@ class ListTagWidget(QWidget):
             editButton = QPushButton("&Modifica Tag...")
             removeButton = QPushButton("&Rimuovi Tag")
             self.listWidget = QListWidget()
-            self.listWidget.setSelectionMode(QAbstractItemView.NoSelection)
+            #self.listWidget.setSelectionMode(QAbstractItemView.NoSelection)
             self.listWidget.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-            #self.listWidget.setAcceptDrops(True)
-            #self.listWidget.setDropIndicatorShown(True)
             #Creazione Layout
             layout = QGridLayout(self)
             layout.addWidget(self.listWidget, 1, 1, 1, 1)
@@ -133,13 +131,32 @@ class ListTagWidget(QWidget):
             self.adjustSize()
             #Connessioni
             self.connect(addButton, SIGNAL("clicked()"), self.addTag)
+            self.connect(removeButton, SIGNAL("clicked()"), self.delTag)
         
         def addTag(self):
             dialog = AddTagDlg(self.listWidget, self)
             dialog.show()
             if dialog.exec_():
                 self.refreshSizeItems()
-            
+                
+        def delTag(self):
+            item = self.listWidget.itemWidget(self.listWidget.currentItem()).text()
+            print item
+            if item:
+                msgBox = QMessageBox(self)
+                msgBox.setText("Sei sicuro di voler eliminare il tag ""%s""?" % item)
+                msgBox.setIcon(QMessageBox.Warning)
+                msgBox.setWindowTitle("Rimuovi Tag")
+                msgBox.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+                result = msgBox.exec_()
+                
+                if result == QMessageBox.Ok:
+                    self.listWidget.takeItem(self.listWidget.currentRow())
+                    self.refreshSizeItems()
+                
+                elif result == QMessageBox.Cancel:
+                    return
+
         def refreshSizeItems(self):
             size = self.listWidget.size()
             #print ("%s*%s" % (size.width(), size.height()))
