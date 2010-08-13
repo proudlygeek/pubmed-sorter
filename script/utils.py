@@ -74,7 +74,7 @@ def usage():
     print(" -x: \t\t\tAttiva modalita' Mixed per riordinare linee numerate e non (opzionale)")
     print(" --mixedmode")
 
-def loadFile(inputFile, mixedMode = False):
+def loadFile(inputFile, mixedMode = False, guiMode = False):
     #Apertura del file txt contenente i record PubMed da ordinare
     try:
         f = open(inputFile,"r").read().replace("\n"," ").replace("\r"," ")
@@ -85,15 +85,26 @@ def loadFile(inputFile, mixedMode = False):
     if mixedMode:
         result = re.findall(r'\s+(.+?) PMID: (\d{7,8})', f, re.M | re.S)
         result = zip([re.sub(r'\d+: ', '', line[0]) for line in result], [line[1] for line in result])
+    elif guiMode:
+        result = re.findall(r'(\d+): (.+?) PMID:\s{1,2}(\d{7,8})', f, re.M | re.S)
     else:
         result = re.findall(r'\d+: (.+?) PMID:\s{1,2}(\d{7,8})', f, re.M | re.S)
-      
+    
     #Controllo dei duplicati
-    keys = [line[1] for line in result]
-    values = [line[0] for line in result]
+    if guiMode:
+        keys = [line[2] for line in result]
+        values = [(line[0], line[1]) for line in result]
+    else:
+        keys = [line[1] for line in result]
+        values = [line[0] for line in result]
+    
+        
     dataDict = dict(zip(keys, values))
     print("Duplicati: %d; Unici: %d; Totale: %d;" % (len(result) - len(dataDict), len(dataDict), len(result)))
     result = zip(dataDict.values(), dataDict.keys())
+    
+    print result
+    
     return result
 
 def loadFromGUI(self, data):

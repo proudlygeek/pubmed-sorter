@@ -3,7 +3,7 @@ import os.path
 import qrc_resources
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-from core.utils import loadFile
+from script.utils import loadFile
 from ui.ui import *
 from views.dragtable import DragTable
 from ui.taglabel import TagLabel
@@ -81,12 +81,13 @@ class MainWindow(QMainWindow):
     def fileOpen(self):
         self.fileInput = QFileDialog.getOpenFileName(self, "Apri Documento...", "/home/bargio/Dropbox/PubMed","File di testo (*.txt)")
         if os.path.isfile(self.fileInput):
-            dataToLoad = loadFile(self.fileInput.replace("\r"," "))
+            dataToLoad = loadFile(self.fileInput, False, True)
             #Aggiungo il campo per i tag alla struttura dati (conversione a lista)
             self.dataWithTagsField = [list(line) for line in dataToLoad]
             for line in self.dataWithTagsField:
                 #Inizializza i tag con il simbolo "meno"
                 line.append('-')
+            #print self.dataWithTagsField
             self.fullScreen()
             self.centralWidget = CentralWidget(self.dataWithTagsField, self)
             self.setCentralWidget(self.centralWidget)
@@ -147,12 +148,10 @@ class MainWindow(QMainWindow):
         msgBox.setIcon(QMessageBox.Question)
         result = msgBox.exec_()
         
-        if result == QMessageBox.Ok:
-            
-
-        
-        
-    
+        if result == QMessageBox.Yes:
+            loadFromGUI(self.dataWithTagsField, tagsList)
+        elif result == QMessageBox.No:
+            return
         
 class ListTagWidget(QWidget):
         def __init__(self, parent = None):
@@ -244,15 +243,14 @@ class CentralWidget(QWidget):
         hh = tableView.horizontalHeader()
         #hh.resizeSection(1, super(CentralWidget, self).width()+100)
         #hh.setResizeMode(QHeaderView.Stretch)
-        hh.swapSections(1,3)
-        hh.swapSections(1,2)
-        hh.setStretchLastSection(True)
+        #hh.swapSections(1,3)
+        #hh.swapSections(1,2)
+        #hh.setStretchLastSection(True)
         tableView.setSelectionMode(QAbstractItemView.ExtendedSelection)
-        tableView.setSelectionBehavior(QAbstractItemView.SelectRows)
-        tableView.resizeColumnToContents(0)
-        tableView.resizeColumnToContents(2)
-        tableView.resizeColumnToContents(3)
-        print self.parent()
+        #tableView.setSelectionBehavior(QAbstractItemView.SelectRows)
+        #tableView.resizeColumnToContents(0)
+        #tableView.resizeColumnToContents(2)
+        #tableView.resizeColumnToContents(3)
         #Connessioni
         self.connect(generateButton, SIGNAL("clicked()"), self.parent().generateFiles)
         return tableView
