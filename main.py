@@ -11,7 +11,7 @@ from ui.taglabel import TagLabel
 from classes.customlist import CustomList
 from script.utils import loadFromGUI
 
-__version__="0.2.1"
+__version__="0.2.2"
 __license__="LGPL VERSION 3.0"
 
 class MainWindow(QMainWindow):
