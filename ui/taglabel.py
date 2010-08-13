@@ -11,7 +11,6 @@ class TagLabel(QLabel):
         self.setText(text)
         #Cambio il colore
         self.setColor(self.tagColor)
-        self.defaultStyle = self.styleSheet()
         self.setAlignment(Qt.AlignHCenter|Qt.AlignVCenter)
         self.setAcceptDrops(True)
         #Connessioni
@@ -55,9 +54,10 @@ class TagLabel(QLabel):
     def set_bg(self, active = False):
         if active:
             style = "QLabel {background: yellow; font-size: 14pt;}"
-            self.setStyleSheet(style)
         else:
-            self.setStyleSheet(self.defaultStyle)
+            style = "QLabel {background:%s; font-size: 14pt; }" % self.tagColor
+        
+        self.setStyleSheet(style)
             
     def setColor(self, color):
         self.setStyleSheet("QLabel { background-color: %s; font-size: 14pt; }" % color)
