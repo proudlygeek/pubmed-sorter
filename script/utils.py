@@ -103,7 +103,8 @@ def loadFile(inputFile, mixedMode = False, guiMode = False):
     print("Duplicati: %d; Unici: %d; Totale: %d;" % (len(result) - len(dataDict), len(dataDict), len(result)))
     result = zip(dataDict.values(), dataDict.keys())
     
-    print result
+    if guiMode:
+        result = [(item[0][0], item[0][1], item[1]) for item in result]
     
     return result
 
