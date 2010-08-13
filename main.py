@@ -103,7 +103,7 @@ class MainWindow(QMainWindow):
                 """<b>PubMed Sorter</b> v %s
                 <p>Copyright &copy; 2010 Gianluca Bargelli 
                 All right reserved.
-                <p>Released under license %s</p>.
+                <p>Released under license %s.</p>
                 <p>This application can be used to perform <a href = "http://www.ncbi.nlm.nih.gov/pubmed">PubMed</a> record filtering and sorting from plain PubMed txt format.</p>
                 <p>Python %s - Qt %s - PyQt %s on %s</p>""" % (__version__, __license__, platform.python_version(), QT_VERSION_STR,
                 PYQT_VERSION_STR, platform.system()))
