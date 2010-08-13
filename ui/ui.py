@@ -63,7 +63,7 @@ class EditTagDlg(AddTagDlg):
         self.setColor(QColor(itemWidget.tagColor))
         self.lineEdit.setText(itemWidget.text())
         self.lineEdit.selectAll()
-        print ("Colore Attuale: %s" % self.color.name())
+        #print ("Colore Attuale: %s" % self.color.name())
         self.oldColor = self.color
         
     def accept(self):
@@ -72,8 +72,6 @@ class EditTagDlg(AddTagDlg):
         colorDict = self.parent().parent().parent().centralWidget.tableList.colorDict
         
         #Devo cambiare anche il dizionario della tabella
-        print colorDict
-        
         for key in colorDict:
             if colorDict[key] == self.oldColor.name():
                 changedIndexList.append(key)
