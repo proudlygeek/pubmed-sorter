@@ -1,5 +1,6 @@
 import sys
 import os.path
+import platform
 import qrc_resources
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
@@ -8,8 +9,9 @@ from ui.ui import *
 from views.dragtable import DragTable
 from ui.taglabel import TagLabel
 from classes.customlist import CustomList
+from script.utils import loadFromGUI
 
-__version__="0.1.4"
+__version__="0.2"
 __license__="LGPL VERSION 3.0"
 
 class MainWindow(QMainWindow):
@@ -20,6 +22,7 @@ class MainWindow(QMainWindow):
         self.fileInput = None
         #Inizializzazione finestra principale
         self.setWindowTitle("PubMed Sorter")
+        self.setWindowIcon(QIcon(":/icon.png"))
         self.resize(200, 200)
         self.center()
         #Creazione lista centrale
@@ -79,7 +82,7 @@ class MainWindow(QMainWindow):
                 target.addAction(action)
     
     def fileOpen(self):
-        self.fileInput = QFileDialog.getOpenFileName(self, "Apri Documento...", "/home/bargio/Dropbox/PubMed","File di testo (*.txt)")
+        self.fileInput = QFileDialog.getOpenFileName(self, "Apri Documento...", "%s" % os.getcwd(),"File di testo (*.txt)")
         if os.path.isfile(self.fileInput):
             dataToLoad = loadFile(self.fileInput, False, True)
             #Aggiungo il campo per i tag alla struttura dati (conversione a lista)
@@ -95,7 +98,13 @@ class MainWindow(QMainWindow):
             self.status.showMessage("%s caricato." % self.fileInput,5000)
     
     def helpAbout(self):
-        pass
+        QMessageBox.about(self, "About PubMed Sorter",
+                """<b>PubMed Sorter</b> v %s
+                <p>Copyright &copy; 2010 Gianluca Bargelli 
+                All right reserved.
+                <p>This application can be used to perform <a href = "http://www.ncbi.nlm.nih.gov/pubmed">PubMed</a> record filtering and sorting from plain PubMed txt format.</p>
+                <p>Python %s - Qt %s - PyQt %s on %s</p>""" % (__version__, platform.python_version(), QT_VERSION_STR,
+                PYQT_VERSION_STR, platform.system()))
     
     
     def center(self):
@@ -106,10 +115,6 @@ class MainWindow(QMainWindow):
     def fullScreen(self):
         screen = QDesktopWidget().screenGeometry()
         self.resize(screen.width(), screen.height())
-    
-    def dummyMsg(self, item):
-        print "Tupla Oggetto:"
-        print item
         
     def generateFiles(self):
         print "Generazione dei file..."
@@ -149,7 +154,18 @@ class MainWindow(QMainWindow):
         result = msgBox.exec_()
         
         if result == QMessageBox.Yes:
-            loadFromGUI(self.dataWithTagsField, tagsList)
+            msgList = loadFromGUI(self.dataWithTagsField, tagsList)
+            msgBoxResult = QMessageBox()
+            bodyText ="""<p>Risultato generazione file:</p>
+                            <ul>"""
+            for msg in msgList:
+                bodyText+="""<li><p>%s</p></li>""" % msg
+            bodyText+="""</ul>"""
+            msgBoxResult.setWindowTitle("Risultato")
+            msgBoxResult.setText(bodyText)
+            msgBoxResult.setStandardButtons(QMessageBox.Ok)
+            msgBoxResult.setIcon(QMessageBox.Information)
+            msgBoxResult.exec_()
         elif result == QMessageBox.No:
             return
         

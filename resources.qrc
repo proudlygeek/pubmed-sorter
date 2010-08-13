@@ -1,5 +1,6 @@
 <!DOCTYPE RCC><RCC version="1.0">
 	<qresource>
+		<file alias = "icon.png">img/icon.png</file>
 		<file alias = "drag.png">img/drag.png</file>
 	</qresource>
 </RCC>

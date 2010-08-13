@@ -50,15 +50,20 @@ def descyear_descmonth_ascauth(atup):
     
 #Scrive i risultati ordinati in un file
 def printOutput(sortedList, outputFile):
-    output = open(outputFile,"w")
-    for line in sortedList:
-        string = "%s PMID: %s\n\n\n" % (line[1][0], line[1][1])
-        output.write(string)
-    
-    output.close()
-    print("######")
-    print("Output:\t%s generato con successo (%d record processati in %.3f secondi)" % (outputFile, len(sortedList), time.clock()-t0))
-    print("######")
+    try:
+        output = open(outputFile,"w")
+        for line in sortedList:
+            string = "%s PMID: %s\n\n\n" % (line[1][0], line[1][1])
+            output.write(string)
+        
+        output.close()
+        resultStr = "Output:\t%s generato con successo (%d record processati in %.3f secondi)" % (outputFile, len(sortedList), time.clock()-t0)
+        print("######")
+        print(resultStr)
+        print("######")
+        return (resultStr)
+    except IOError as (errno, strerr):
+        return "I/O Error (%s): %s" % (errno, strerr)
     
 #Classe di exception custom (in caso di parametri nulli o errati)
 def usage():
@@ -108,42 +113,18 @@ def loadFile(inputFile, mixedMode = False, guiMode = False):
     
     return result
 
-def loadFromGUI(self, data):
-    pass
+#Rimuove la colonna dei tag e il numero iniziale, invia una lista per ogni tag
+#assegnato da GUI ed infine restituisce una lista con gli eventuali messaggi di successo
+#@return list: Lista di stringhe contenente uno (o piu') messaggi di completamento
+def loadFromGUI(data, files):
+    resultMsg = list()
+    for f in files:
+        tempList = [item[1:3] for item in data if item[3] == f]
+        resultMsg.append(sortPubmed(None, "%s.txt" % f, False, False, tempList))
+        
+    return resultMsg
 
-def main(argv):
-    if not argv:
-        usage()
-        sys.exit()
-    inputFile = None
-    outputFile = None
-    sortMonth = False
-    mixedMode = False
-    #Controllo dei paramatri passati
-    try:
-        opts, args = getopt.getopt(argv,"xMhi:o:",["mixedmode","MonthSort","help","input=","output="])
-    except getopt.GetoptError,err:
-        print str(err)
-        usage()
-        sys.exit(2)
-    
-    for o, a in opts:
-        if o in ("-h","--help"):
-            usage()
-            sys.exit()
-        elif o in ("-i","--input"):
-            inputFile = a
-        elif o in ("-o","--output"):
-            outputFile = a
-        elif o in ("-M","--MonthSort"):
-            sortMonth = True
-            print("SORT BY MONTH ON")
-        elif o in ("-x","--mixedmode"):
-            mixedMode = True
-            print("MIXED MODE ON")
-        else:
-            assert False, "Opzione non specificata"
-            
+def sortPubmed(inputFile = None, outputFile = None, sortMonth =False, mixedMode=False, guiData = None):
     if outputFile == None:
         outputFile = "sorted-"+inputFile
         
@@ -151,7 +132,10 @@ def main(argv):
         outputFile = inputFile
     
     #Carica il file
-    biglist = loadFile(inputFile, mixedMode)
+    if not inputFile and guiData:
+        biglist = guiData
+    else:
+        biglist = loadFile(inputFile, mixedMode)
     
     #Estrapola i dati in varie liste:
     #numeri
@@ -190,7 +174,43 @@ def main(argv):
         result = sorted(dataAndKeys, key = descyear_descmonth_ascauth)
     
     #Esporta i risultati ordinati http://docs.python.org/tutorial/errors.html
-    printOutput(result, outputFile)
+    return printOutput(result, outputFile)
     
+
+def main(argv):
+    if not argv:
+        usage()
+        sys.exit()
+    inputFile = None
+    outputFile = None
+    sortMonth = False
+    mixedMode = False
+    #Controllo dei paramatri passati
+    try:
+        opts, args = getopt.getopt(argv,"xMhi:o:",["mixedmode","MonthSort","help","input=","output="])
+    except getopt.GetoptError,err:
+        print str(err)
+        usage()
+        sys.exit(2)
+    
+    for o, a in opts:
+        if o in ("-h","--help"):
+            usage()
+            sys.exit()
+        elif o in ("-i","--input"):
+            inputFile = a
+        elif o in ("-o","--output"):
+            outputFile = a
+        elif o in ("-M","--MonthSort"):
+            sortMonth = True
+            print("SORT BY MONTH ON")
+        elif o in ("-x","--mixedmode"):
+            mixedMode = True
+            print("MIXED MODE ON")
+        else:
+            assert False, "Opzione non specificata"
+    
+    sortPubMed(inputFile, outputFile, sortMonth, mixedMode)
+            
 if __name__ == "__main__":
     main(sys.argv[1:])

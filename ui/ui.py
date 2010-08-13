@@ -2,7 +2,6 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 from colorbutton import ColorButton
 from taglabel import TagLabel
-from classes.customitem import CustomItem
 
 class AddTagDlg(QDialog):
     def __init__(self, list, parent = None):
