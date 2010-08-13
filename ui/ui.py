@@ -72,8 +72,6 @@ class EditTagDlg(AddTagDlg):
         colorDict = self.parent().parent().parent().centralWidget.tableList.colorDict
         
         #Devo cambiare anche il dizionario della tabella
-        print colorDict
-        
         for key in colorDict:
             if colorDict[key] == self.oldColor.name():
                 changedIndexList.append(key)

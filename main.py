@@ -87,10 +87,11 @@ class MainWindow(QMainWindow):
             dataToLoad = loadFile(self.fileInput, False, True)
             #Aggiungo il campo per i tag alla struttura dati (conversione a lista)
             self.dataWithTagsField = [list(line) for line in dataToLoad]
+            
             for line in self.dataWithTagsField:
                 #Inizializza i tag con il simbolo "meno"
                 line.append('-')
-            #print self.dataWithTagsField
+
             self.fullScreen()
             self.centralWidget = CentralWidget(self.dataWithTagsField, self)
             self.setCentralWidget(self.centralWidget)
@@ -117,7 +118,6 @@ class MainWindow(QMainWindow):
         self.resize(screen.width(), screen.height())
         
     def generateFiles(self):
-        print "Generazione dei file..."
         tagsList = list()
         for item in self.dataWithTagsField:
             tagsList.append(item[3])
@@ -207,7 +207,7 @@ class ListTagWidget(QWidget):
                 
         def delTag(self):
             item = self.listWidget.itemWidget(self.listWidget.currentItem()).text()
-            #print item
+            
             if item:
                 msgBox = QMessageBox(self)
                 msgBox.setText("Sei sicuro di voler eliminare il tag ""%s""?" % item)
@@ -233,7 +233,7 @@ class ListTagWidget(QWidget):
 
         def refreshSizeItems(self):
             size = self.listWidget.size()
-            #print ("%s*%s" % (size.width(), size.height()))
+            
             for item in [self.listWidget.item(x) for x in range(self.listWidget.count())]:
                 item.setSizeHint(QSize(item.sizeHint().width(), size.height()/(self.listWidget.count()) ))
                 #item.setAcceptDrops(True)
@@ -330,10 +330,7 @@ class pubmedTableList(QAbstractTableModel):
         if index.isValid():
             return (Qt.ItemIsDragEnabled | Qt.ItemIsDropEnabled | Qt.ItemIsEnabled | Qt.ItemIsSelectable )
     
-
- 
 app = QApplication(sys.argv)
 window = MainWindow()
 window.show()
 sys.exit(app.exec_())
-

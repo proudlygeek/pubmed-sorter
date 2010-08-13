@@ -14,7 +14,6 @@ class TagLabel(QLabel):
         self.defaultStyle = self.styleSheet()
         self.setAlignment(Qt.AlignHCenter|Qt.AlignVCenter)
         self.setAcceptDrops(True)
-        #print self.parent().parent().parent().parent()
         #Connessioni
         self.connect(self, SIGNAL("dropAccepted(PyQt_PyObject)"), self.parent().parent().parent().parent().centralWidget.tableList.updateData)
 

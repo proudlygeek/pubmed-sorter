@@ -31,13 +31,10 @@ class DragTable(QTableView):
         for index in indices:
             selected.add(index.row())
         
-        #print selected
-        
         #selected = self.model().data(index, Qt.UserRole)
         #selected = index.row()
         #Conversione a ByteStream
         bstream = cPickle.dumps(selected)
-        #print pickle.loads(bstream).data()
         mimeData = QMimeData()
         mimeData.setData("application/pubmedrecord", bstream)
         #animazione drag
@@ -72,8 +69,6 @@ class DragTable(QTableView):
         self.startDrag(event)
 
     def updateData(self, item):
-        print item
-        #print self.model().data(item[0], "NoRow")
         self.model().setData(item[0], item[1], "NoRow")
         #Aggiorna il dizionario dei colori
         for element in item[0]:
