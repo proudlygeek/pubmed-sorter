@@ -10,6 +10,9 @@ class DragTable(QTableView):
         super(DragTable, self).__init__(parent)
         self.setDragEnabled(True)
         self.setItemDelegateForColumn(3, TaggedDelegate(self))
+        #Ordinamento numerico crescente per la colonna "#"
+        self.setSortingEnabled(True)
+        self.sortByColumn(0, Qt.AscendingOrder)
         #self.colorDict = {0: '#ffffff', 1: '#c5c5c7', 2: '#ff0000'}
         #Dizionario dei colori  (per la colorazione del campo tag)
         self.colorDict = {}

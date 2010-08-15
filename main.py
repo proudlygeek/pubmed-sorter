@@ -2,6 +2,7 @@ import sys
 import os.path
 import platform
 import qrc_resources
+import operator
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from script.utils import loadFile
@@ -11,7 +12,7 @@ from ui.taglabel import TagLabel
 from classes.customlist import CustomList
 from script.utils import loadFromGUI
 
-__version__="0.2.2"
+__version__="0.2.3"
 __license__="LGPL VERSION 3.0"
 
 class MainWindow(QMainWindow):
@@ -91,7 +92,11 @@ class MainWindow(QMainWindow):
             for line in self.dataWithTagsField:
                 #Inizializza i tag con il simbolo "meno"
                 line.append('-')
-
+                
+            #converti i primi valori in interi (per sort colonna)
+            for line in self.dataWithTagsField:
+                line[0] = int(line[0])
+                
             self.fullScreen()
             self.centralWidget = CentralWidget(self.dataWithTagsField, self)
             self.setCentralWidget(self.centralWidget)
@@ -329,6 +334,16 @@ class pubmedTableList(QAbstractTableModel):
     def flags(self, index):
         if index.isValid():
             return (Qt.ItemIsDragEnabled | Qt.ItemIsDropEnabled | Qt.ItemIsEnabled | Qt.ItemIsSelectable )
+    
+    def sort(self, Ncol, order):
+        #Ordina la tabella dato il numero di colonna e l'ordinamento
+        self.emit(SIGNAL("layoutAboutToBeChanged()"))
+        if order == Qt.AscendingOrder:
+            self.publication = sorted(self.publication, key=operator.itemgetter(Ncol))        
+        elif order == Qt.DescendingOrder:
+            self.publication.reverse()
+        self.emit(SIGNAL("layoutChanged()"))
+
 
 app = QApplication(sys.argv)
 window = MainWindow()
