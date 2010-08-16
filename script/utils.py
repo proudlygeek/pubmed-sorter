@@ -82,16 +82,19 @@ def loadFile(inputFile, mixedMode = False, guiMode = False):
     try:
         f = open(inputFile,"r").read().replace("\n"," ").replace("\r"," ")
     except IOError as ex:
-        print "Errore durante l'apertura del file: %s" % ex 
+        print "Errore durante l'apertura del file: %s" % ex
+    
+    
     
     #Ottiene una lista di record che soddisfano la RegEx all'int
     if mixedMode:
-        result = re.findall(r'\s+(.+?) PMID: (\d{7,8})', f, re.M | re.S)
+        result = re.findall(r'\s+(.+?) PMID:\s{1,2}(\d{7,8})', f, re.M | re.S)
         result = zip([re.sub(r'\d+: ', '', line[0]) for line in result], [line[1] for line in result])
     elif guiMode:
         result = re.findall(r'(\d+): (.+?) PMID:\s{1,2}(\d{7,8})', f, re.M | re.S)
     else:
         result = re.findall(r'\d+: (.+?) PMID:\s{1,2}(\d{7,8})', f, re.M | re.S)
+    
 
     result = removeDuplicates(result, mixedMode, guiMode)
     

@@ -92,27 +92,35 @@ class MainWindow(QMainWindow):
     def fileOpen(self):
         self.fileInput = QFileDialog.getOpenFileName(self, "Apri Documento...", "%s" % os.getcwd(),"File di testo (*.txt)")
         if os.path.isfile(self.fileInput):
-            dataToLoad = loadFile(self.fileInput, True, True)
-            #Aggiungo il campo per i tag alla struttura dati (conversione a lista)
-
-            self.dataWithTagsField = [list(line) for line in dataToLoad]
+            #Carico dapprima con il metodo classico...
+            dataToLoad = loadFile(self.fileInput, False, True)
             
+            #Verifico la tipologia di txt
+            try:
+                #Se il risultato della conversione e' un intero valido allora
+                #la riga e' numerata
+                int(dataToLoad[0][0])
+                isNumerated = True
+            except Exception:
+                isNumerated = False
+                #Non comincia per zero quindi ricarico il file
+                dataToLoad = loadFile(self.fileInput,True, True)
+            
+            #Aggiungo il campo per i tag alla struttura dati (conversione a lista)
+            self.dataWithTagsField = [list(line) for line in dataToLoad]
             
             for line in self.dataWithTagsField:
                 #Inizializza i tag con il simbolo "meno"
                 line.append('-')
-                
-            #converti i primi valori in interi (per sort colonna)
-            if type(line[0]) == 'int':
-                for line in self.dataWithTagsField:
-                    line[0] = int(line[0])
-            else:
-                #List prepend
-                for line in self.dataWithTagsField:
-                    line.insert(0, '-')
             
-            print self.dataWithTagsField
-                            
+            if isNumerated:
+                for line in self.dataWithTagsField:
+                    #Converti i primi valori in interi (per sort colonna)
+                    line[0]=int(line[0])
+            else:
+                for line in self.dataWithTagsField:
+                    #Metti un - al posto del numero
+                    line.insert(0, '-')
             self.fullScreen()
             self.centralWidget = CentralWidget(self.dataWithTagsField, self)
             self.setCentralWidget(self.centralWidget)
