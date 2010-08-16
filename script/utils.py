@@ -1,7 +1,5 @@
 import re, os, sys, getopt, time
 
-__version__="0.1.4"
-
 #tempo di inizio
 t0 = time.clock()
 
@@ -95,17 +93,42 @@ def loadFile(inputFile, mixedMode = False, guiMode = False):
     else:
         result = re.findall(r'\d+: (.+?) PMID:\s{1,2}(\d{7,8})', f, re.M | re.S)
     
-    #Controllo dei duplicati
-    if guiMode:
-        keys = [line[2] for line in result]
-        values = [(line[0], line[1]) for line in result]
-    else:
-        keys = [line[1] for line in result]
-        values = [line[0] for line in result]
+    result = removeDuplicates(result, guiMode)
     
+    return result
+
+def loadFromGUI(data, files):
+    #Removes tag's label and strip record number creating several lists (one for each tag
+    #entered by the user) to be processed and sorted.
+    #
+    #@return list: Lista di stringhe contenente uno (o piu') messaggi di completamento.
+    resultMsg = list()
+    for f in files:
+        tempList = [item[1:3] for item in data if item[3] == f]
         
+        if fileExists(f):
+            oldList = loadFile(f+".txt", True, False)
+            tempList+=oldList
+            tempList = removeDuplicates(tempList, False)
+    
+        resultMsg.append(sortPubmed(None, "%s.txt" % f, False, False, tempList))
+        
+    return resultMsg
+
+def removeDuplicates(dataList, guiMode = False):
+    #Removes duplicates from a list by transforming it into a dictionary and back
+    #to a list using PMID as key which implicitly removes any possible record duplicate.
+    #
+    #@return list
+    if guiMode:
+        keys = [line[2] for line in dataList]
+        values = [(line[0], line[1]) for line in dataList]
+    else:
+        keys = [line[1] for line in dataList]
+        values = [line[0] for line in dataList]
+    
     dataDict = dict(zip(keys, values))
-    print("Duplicati: %d; Unici: %d; Totale: %d;" % (len(result) - len(dataDict), len(dataDict), len(result)))
+    print("Duplicati: %d; Unici: %d; Totale: %d;" % (len(dataList) - len(dataDict), len(dataDict), len(dataList)))
     result = zip(dataDict.values(), dataDict.keys())
     
     if guiMode:
@@ -113,19 +136,9 @@ def loadFile(inputFile, mixedMode = False, guiMode = False):
     
     return result
 
-def loadFromGUI(data, files):
-    #Rimuove la colonna dei tag e il numero iniziale, invia una lista per ogni tag
-    #assegnato da GUI ed infine restituisce una lista con gli eventuali messaggi di successo.
-    #@return list: Lista di stringhe contenente uno (o piu') messaggi di completamento.
-    resultMsg = list()
-    for f in files:
-        tempList = [item[1:3] for item in data if item[3] == f]
-        resultMsg.append(sortPubmed(None, "%s.txt" % f, False, False, tempList))
-        
-    return resultMsg
-
 def fileExists(f):
     #Checks if file f exists into the current folder.
+    #
     #@return: True if file already exists, False otherwise.
     return os.path.exists(f+".txt")
 
