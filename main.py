@@ -28,8 +28,8 @@ class MainWindow(QMainWindow):
         self.resize(200, 200)
         self.center()
         #Creazione lista centrale
-        self.loadLabel = QLabel ("<b> Carica un documento per iniziare </b>")
-        self.setCentralWidget(self.loadLabel)
+        loadLabel = QLabel ("<b> Carica un documento per iniziare </b>")
+        self.setCentralWidget(loadLabel)
 
         #Status Bar
         self.status =self.statusBar()
@@ -37,27 +37,32 @@ class MainWindow(QMainWindow):
         self.status.showMessage("Nessun documento caricato.",5000)
         
         #Azioni
-        fileOpenAction = self.createAction("&Apri...", self.fileOpen, QKeySequence.Open, "fileopen", "Carica un documento PubMed")
+        fileOpenAction = self.createAction("&Apri file...", self.fileOpen, QKeySequence.Open, "fileopen", "Carica un documento PubMed")
+        self.fileCloseAction = self.createAction("&Chiudi file", self.fileClose, QKeySequence.Close, "fileclose", "Chiudi il documento attuale")
+        #disattivato inizialmente
+        self.fileCloseAction.setEnabled(False)
         fileQuitAction = self.createAction("&Esci", self.close, "Ctrl+Q", None, "Esci dal programma")
         helpAboutAction = self.createAction("&About...", self.helpAbout, "Ctrl+Alt+A",None,"Informazioni sul software")
         
         #Barra dei menu
         menu = self.menuBar()
         fileMenu = menu.addMenu("&File")
-        self.addActions(fileMenu, (fileOpenAction, None, fileQuitAction))
+        self.addActions(fileMenu, (fileOpenAction, self.fileCloseAction, None, fileQuitAction))
         helpMenu = menu.addMenu("&Help")
         helpMenu.addAction(helpAboutAction)
         
+        
     def createDock(self):
-        #Creazione lista tag laterale (area dock)
-        taglistDockWidget = QDockWidget("Lista Tag:",self)
-        taglistDockWidget.setObjectName("taglistDockWidget")
-        taglistDockWidget.setAllowedAreas(Qt.LeftDockWidgetArea|Qt.RightDockWidgetArea)
-        self.listTag = ListTagWidget(self)
-        taglistDockWidget.setWidget(self.listTag)
-        #buttontest = TagLabel("Test", "red", self)
-        #taglistDockWidget.setWidget(buttontest)
-        self.addDockWidget(Qt.LeftDockWidgetArea, taglistDockWidget)
+        if self.fileInput:
+            #Creazione lista tag laterale (area dock)
+            taglistDockWidget = QDockWidget("Lista Tag:",self)
+            taglistDockWidget.setObjectName("taglistDockWidget")
+            taglistDockWidget.setAllowedAreas(Qt.LeftDockWidgetArea|Qt.RightDockWidgetArea)
+            self.listTag = ListTagWidget(self)
+            taglistDockWidget.setWidget(self.listTag)
+            #buttontest = TagLabel("Test", "red", self)
+            #taglistDockWidget.setWidget(buttontest)
+            self.addDockWidget(Qt.LeftDockWidgetArea, taglistDockWidget)
     
     #Metodo per la creazione rapida di azioni   
     def createAction(self, text, slot = None, shortcut = None, icon = None, tip = None, checkable = False, signal ="triggered()"):
@@ -102,7 +107,17 @@ class MainWindow(QMainWindow):
             self.centralWidget = CentralWidget(self.dataWithTagsField, self)
             self.setCentralWidget(self.centralWidget)
             self.createDock()
-            self.status.showMessage("%s caricato." % self.fileInput,5000)
+            self.fileCloseAction.setEnabled(True)
+            self.status.showMessage("%s caricato." % self.fileInput,5000)        
+            
+    def fileClose(self):
+        self.fileInput = None
+        self.dataWithTagsField = None
+        self.centralWidget.close()
+        self.resize(200, 200)
+        #self.center()
+        self.fileCloseAction.setEnabled(False)
+        self.setCentralWidget(QLabel("<b> Carica un documento per iniziare </b>"))
     
     def helpAbout(self):
         QMessageBox.about(self, "About PubMed Sorter",
