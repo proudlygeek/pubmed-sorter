@@ -92,8 +92,8 @@ def loadFile(inputFile, mixedMode = False, guiMode = False):
         result = re.findall(r'(\d+): (.+?) PMID:\s{1,2}(\d{7,8})', f, re.M | re.S)
     else:
         result = re.findall(r'\d+: (.+?) PMID:\s{1,2}(\d{7,8})', f, re.M | re.S)
-    
-    result = removeDuplicates(result, guiMode)
+
+    result = removeDuplicates(result, mixedMode, guiMode)
     
     return result
 
@@ -109,23 +109,25 @@ def loadFromGUI(data, files):
         if fileExists(f):
             oldList = loadFile(f+".txt", True, False)
             tempList+=oldList
-            tempList = removeDuplicates(tempList, False)
+            tempList = removeDuplicates(tempList, True, False)
     
         resultMsg.append(sortPubmed(None, "%s.txt" % f, False, False, tempList))
         
     return resultMsg
 
-def removeDuplicates(dataList, guiMode = False):
+def removeDuplicates(dataList, mixedMode = False, guiMode = False):
     #Removes duplicates from a list by transforming it into a dictionary and back
     #to a list using PMID as key which implicitly removes any possible record duplicate.
     #
     #@return list
-    if guiMode:
+    if guiMode and not mixedMode:
         keys = [line[2] for line in dataList]
         values = [(line[0], line[1]) for line in dataList]
     else:
         keys = [line[1] for line in dataList]
         values = [line[0] for line in dataList]
+    
+    print keys
     
     dataDict = dict(zip(keys, values))
     print("Duplicati: %d; Unici: %d; Totale: %d;" % (len(dataList) - len(dataDict), len(dataDict), len(dataList)))
