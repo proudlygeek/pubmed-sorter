@@ -78,11 +78,16 @@ class EditTagDlg(AddTagDlg):
                         
         for index in changedIndexList:
             self.parent().parent().parent().centralWidget.tableList.colorDict[index] = self.color.name()
+        #Nessun file aperto    
+        if self.parent().parent().parent().fileInput:   
+            self.parent().parent().parent().centralWidget.tableList.model().setData(changedIndexList, self.lineEdit.text(), "NoRow" )
             
-        self.parent().parent().parent().centralWidget.tableList.model().setData(changedIndexList, self.lineEdit.text(), "NoRow" )
         self.item.setText(self.lineEdit.text())
         self.item.setColor(self.color.name())
-        self.parent().parent().parent().centralWidget.tableList.resizeColumnToContents(3)    
+        #Nessun file aperto
+        if self.parent().parent().parent().fileInput:
+            self.parent().parent().parent().centralWidget.tableList.resizeColumnToContents(3)
+        
         #self.parent().listWidget.colorDict[self.index] 
         QDialog.accept(self)
         

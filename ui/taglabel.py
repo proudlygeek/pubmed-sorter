@@ -62,3 +62,6 @@ class TagLabel(QLabel):
     def setColor(self, color):
         self.setStyleSheet("QLabel { background-color: %s; font-size: 14pt; }" % color)
         self.tagColor = color
+    
+    def reConnect(self):
+        self.connect(self, SIGNAL("dropAccepted(PyQt_PyObject)"), self.parent().parent().parent().parent().parent().centralWidget.tableList.updateData)

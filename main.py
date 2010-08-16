@@ -22,6 +22,7 @@ class MainWindow(QMainWindow):
         
         #Variabile file
         self.fileInput = None
+        self.listTag = None
         #Inizializzazione finestra principale
         self.setWindowTitle("PubMed Sorter")
         self.setWindowIcon(QIcon(":/icon.png"))
@@ -53,7 +54,7 @@ class MainWindow(QMainWindow):
         
         
     def createDock(self):
-        if self.fileInput:
+        if not self.listTag:
             #Creazione lista tag laterale (area dock)
             taglistDockWidget = QDockWidget("Lista Tag:",self)
             taglistDockWidget.setObjectName("taglistDockWidget")
@@ -108,16 +109,19 @@ class MainWindow(QMainWindow):
             self.setCentralWidget(self.centralWidget)
             self.createDock()
             self.fileCloseAction.setEnabled(True)
+            
+            #Ricarica dizionario tag
+            for item in [self.listTag.listWidget.itemWidget(self.listTag.listWidget.item(x)) for x in range(self.listTag.listWidget.count())]:
+                item.reConnect()
+            
             self.status.showMessage("%s caricato." % self.fileInput,5000)        
             
     def fileClose(self):
         self.fileInput = None
         self.dataWithTagsField = None
         self.centralWidget.close()
-        self.resize(200, 200)
-        #self.center()
         self.fileCloseAction.setEnabled(False)
-        self.setCentralWidget(QLabel("<b> Carica un documento per iniziare </b>"))
+        self.setCentralWidget(QLabel("<b> Carica un documento per iniziare </b>").setAlignment(Qt.AlignHCenter | Qt.AlignVCenter))
     
     def helpAbout(self):
         QMessageBox.about(self, "About PubMed Sorter",
@@ -218,6 +222,7 @@ class ListTagWidget(QWidget):
             layout.addWidget(self.editButton, 3, 1)
             layout.addWidget(self.removeButton, 4, 1)
             self.setLayout(layout)
+            self.setMaximumWidth(200)
             self.adjustSize()
             #Connessioni
             self.connect(addButton, SIGNAL("clicked()"), self.addTag)
