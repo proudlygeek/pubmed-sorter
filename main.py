@@ -107,8 +107,11 @@ class MainWindow(QMainWindow):
                 for line in self.dataWithTagsField:
                     line[0] = int(line[0])
             else:
+                #List prepend
                 for line in self.dataWithTagsField:
-                    line[0] = '-'
+                    line.insert(0, '-')
+            
+            print self.dataWithTagsField
                             
             self.fullScreen()
             self.centralWidget = CentralWidget(self.dataWithTagsField, self)

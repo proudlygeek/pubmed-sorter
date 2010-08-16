@@ -127,13 +127,12 @@ def removeDuplicates(dataList, mixedMode = False, guiMode = False):
         keys = [line[1] for line in dataList]
         values = [line[0] for line in dataList]
     
-    print keys
     
     dataDict = dict(zip(keys, values))
     print("Duplicati: %d; Unici: %d; Totale: %d;" % (len(dataList) - len(dataDict), len(dataDict), len(dataList)))
     result = zip(dataDict.values(), dataDict.keys())
     
-    if guiMode:
+    if guiMode and not mixedMode:
         result = [(item[0][0], item[0][1], item[1]) for item in result]
     
     return result
