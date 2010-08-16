@@ -1,4 +1,4 @@
-import re, sys, getopt, time
+import re, os, sys, getopt, time
 
 __version__="0.1.4"
 
@@ -113,16 +113,21 @@ def loadFile(inputFile, mixedMode = False, guiMode = False):
     
     return result
 
-#Rimuove la colonna dei tag e il numero iniziale, invia una lista per ogni tag
-#assegnato da GUI ed infine restituisce una lista con gli eventuali messaggi di successo
-#@return list: Lista di stringhe contenente uno (o piu') messaggi di completamento
 def loadFromGUI(data, files):
+    #Rimuove la colonna dei tag e il numero iniziale, invia una lista per ogni tag
+    #assegnato da GUI ed infine restituisce una lista con gli eventuali messaggi di successo.
+    #@return list: Lista di stringhe contenente uno (o piu') messaggi di completamento.
     resultMsg = list()
     for f in files:
         tempList = [item[1:3] for item in data if item[3] == f]
         resultMsg.append(sortPubmed(None, "%s.txt" % f, False, False, tempList))
         
     return resultMsg
+
+def fileExists(f):
+    #Checks if file f exists into the current folder.
+    #@return: True if file already exists, False otherwise.
+    return os.path.exists(f+".txt")
 
 def sortPubmed(inputFile = None, outputFile = None, sortMonth =False, mixedMode=False, guiData = None):
     if outputFile == None:

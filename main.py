@@ -11,6 +11,7 @@ from views.dragtable import DragTable
 from ui.taglabel import TagLabel
 from classes.customlist import CustomList
 from script.utils import loadFromGUI
+from script.utils import fileExists
 
 __version__="0.2.3"
 __license__="LGPL VERSION 3.0"
@@ -131,26 +132,36 @@ class MainWindow(QMainWindow):
         tagsList = list(set(tagsList))
         
         nfiles = len(tagsList)
-
         msgBox = QMessageBox(self)
         msgBox.setWindowTitle("Conferma Generazione File")
         
+        existsMsg = """<p style = "font-size: 9pt">
+                    (Il file <b style = "color: red">esiste</b>;
+                    I record verranno <b>integrati</b> e <b>ordinati</b>)</p>"""
         if nfiles > 1:
-            fileStr = """Verranno generati <b>%d</b> files:
+            fileStr = """Verranno scritti <b>%d</b> files:
                       <ul>""" % nfiles
             for tag in tagsList:
                 if tag == '-':
                     fileStr+="""<li><p>notag.txt</p></li>"""
+                    if fileExists(tag):
+                        fileStr+=(existsMsg)
                 else:
                     fileStr+="""<li><p>%s.txt</p></li>""" % tag
+                    if fileExists(tag):
+                        fileStr+=(existsMsg)
             fileStr+="""</ul>"""
         else:
             fileStr = """Verra' generato <b>un solo</b> file:"""
             
             if tagsList[0] == '-':
                 fileStr+="""<p>NoTag.txt</p>"""
+                if fileExists(tagsList[0]):
+                        fileStr+=(existsMsg)
             else:
                 fileStr+="""<p>%s.txt</p>""" % tagsList[0]
+                if fileExists(tagsList[0]):
+                        fileStr+=(existsMsg)
                 
         fileStr+="""<b>Vuoi continuare?</b>"""
             
