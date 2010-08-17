@@ -31,7 +31,7 @@ class DragTable(QTableView):
         selected = set()
         
         for index in indices:
-            selected.add(index.row())
+            selected.add(QPersistentModelIndex(index).row())
         
         #selected = self.model().data(index, Qt.UserRole)
         #selected = index.row()
@@ -71,10 +71,11 @@ class DragTable(QTableView):
         self.startDrag(event)
 
     def updateData(self, item):
+        print item
         self.model().setData(item[0], item[1], "NoRow")
         #Aggiorna il dizionario dei colori
         for element in item[0]:
-            self.colorDict[element] = item[2]
+            self.colorDict[item[1]] = item[2]
         
         self.reset()
         self.resizeColumnToContents(3)

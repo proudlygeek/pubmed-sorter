@@ -10,10 +10,11 @@ class TaggedDelegate(QStyledItemDelegate):
         document = QTextDocument()
         document.setDefaultFont(option.font)        
         document.setHtml(text)
+        print self.parent().colorDict
         if text == "-":
             colorTag = QColor("White")
         else:
-            colorTag = QColor(self.parent().colorDict[index.row()])
+            colorTag = QColor(self.parent().colorDict[text])
             
         painter.save()
         painter.fillRect(option.rect, colorTag)
