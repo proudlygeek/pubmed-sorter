@@ -75,7 +75,7 @@ class DragTable(QTableView):
         self.model().setData(item[0], item[1], "NoRow")
         #Aggiorna il dizionario dei colori
         for element in item[0]:
-            self.colorDict[item[1]] = item[2]
+            self.colorDict[item[1]] = (item[2])
         
         self.reset()
         self.resizeColumnToContents(3)

@@ -64,18 +64,22 @@ class EditTagDlg(AddTagDlg):
         self.lineEdit.setText(itemWidget.text())
         self.lineEdit.selectAll()
         #print ("Colore Attuale: %s" % self.color.name())
+        self.oldText = self.lineEdit.text()
         self.oldColor = self.color
         
     def accept(self):
         
-        changedIndexList = list()
-        colorDict = self.parent().parent().parent().centralWidget.tableList.colorDict
+        #print "oldText: %s" % self.parent().parent().parent().centralWidget.tableList.colorDict[str(self.oldText)]
+        #self.parent().parent().parent().centralWidget.tableList.colorDict[str(self.oldText)] = self.color.name()
+        self.parent().parent().parent().centralWidget.tableList.colorDict[str(self.lineEdit.text())] = str(self.color.name())
+        del self.parent().parent().parent().centralWidget.tableList.colorDict[str(self.oldText)]
+        print self.parent().parent().parent().centralWidget.tableList.colorDict
         
         #Devo cambiare anche il dizionario della tabella
-        for key in colorDict:
-            if colorDict[key] == self.oldColor.name():
-                changedIndexList.append(key)
-                        
+        #for key in colorDict:
+        #    if colorDict[key][1] == self.oldColor.name():
+        #        changedIndexList.append(colorDict[key][0])
+        
         for index in changedIndexList:
             self.parent().parent().parent().centralWidget.tableList.colorDict[index] = self.color.name()
         #Nessun file aperto    

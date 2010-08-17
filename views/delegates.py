@@ -10,7 +10,7 @@ class TaggedDelegate(QStyledItemDelegate):
         document = QTextDocument()
         document.setDefaultFont(option.font)        
         document.setHtml(text)
-        print self.parent().colorDict
+        
         if text == "-":
             colorTag = QColor("White")
         else:
