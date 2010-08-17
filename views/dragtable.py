@@ -74,8 +74,13 @@ class DragTable(QTableView):
         print item
         self.model().setData(item[0], item[1], "NoRow")
         #Aggiorna il dizionario dei colori
-        for element in item[0]:
-            self.colorDict[item[1]] = (item[2])
+        if item[1] not in self.colorDict:
+            self.colorDict[item[1]] = (item[0], item[2])
+        else:
+            unionSet = self.colorDict[item[1]][0].union(item[0])
+            self.colorDict[item[1]] = (unionSet, item[2])
+        
+        print self.colorDict
         
         self.reset()
         self.resizeColumnToContents(3)

@@ -14,7 +14,7 @@ class TaggedDelegate(QStyledItemDelegate):
         if text == "-":
             colorTag = QColor("White")
         else:
-            colorTag = QColor(self.parent().colorDict[text])
+            colorTag = QColor(self.parent().colorDict[text][1])
             
         painter.save()
         painter.fillRect(option.rect, colorTag)

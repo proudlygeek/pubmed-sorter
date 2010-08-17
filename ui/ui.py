@@ -71,20 +71,15 @@ class EditTagDlg(AddTagDlg):
         
         #print "oldText: %s" % self.parent().parent().parent().centralWidget.tableList.colorDict[str(self.oldText)]
         #self.parent().parent().parent().centralWidget.tableList.colorDict[str(self.oldText)] = self.color.name()
-        self.parent().parent().parent().centralWidget.tableList.colorDict[str(self.lineEdit.text())] = str(self.color.name())
+        indexSet = self.parent().parent().parent().centralWidget.tableList.colorDict[str(self.oldText)][0]
+        self.parent().parent().parent().centralWidget.tableList.colorDict[str(self.lineEdit.text())] = (indexSet, str(self.color.name()))
         del self.parent().parent().parent().centralWidget.tableList.colorDict[str(self.oldText)]
-        print self.parent().parent().parent().centralWidget.tableList.colorDict
+        colorDict = self.parent().parent().parent().centralWidget.tableList.colorDict
+        print "Dizionario aggiornato: %s" % colorDict
         
-        #Devo cambiare anche il dizionario della tabella
-        #for key in colorDict:
-        #    if colorDict[key][1] == self.oldColor.name():
-        #        changedIndexList.append(colorDict[key][0])
-        
-        for index in changedIndexList:
-            self.parent().parent().parent().centralWidget.tableList.colorDict[index] = self.color.name()
         #Nessun file aperto    
         if self.parent().parent().parent().fileInput:   
-            self.parent().parent().parent().centralWidget.tableList.model().setData(changedIndexList, self.lineEdit.text(), "NoRow" )
+            self.parent().parent().parent().centralWidget.tableList.model().setData(indexSet, str(self.lineEdit.text()), "NoRow" )
             
         self.item.setText(self.lineEdit.text())
         self.item.setColor(self.color.name())
