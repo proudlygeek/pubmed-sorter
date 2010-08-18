@@ -13,7 +13,7 @@ from classes.customlist import CustomList
 from script.utils import loadFromGUI
 from script.utils import fileExists
 
-__version__="0.2.5"
+__version__="0.2.6"
 __license__="LGPL VERSION 3.0"
 
 class MainWindow(QMainWindow):
