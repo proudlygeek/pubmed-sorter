@@ -51,7 +51,7 @@ def printOutput(sortedList, outputFile):
     try:
         output = open(outputFile,"w")
         for line in sortedList:
-            string = "%s PMID: %s\n\n\n" % (line[1][0], line[1][1])
+            string = "%s PubMed PMID: %s\n\n\n" % (line[1][0], line[1][1])
             output.write(string)
         
         output.close()
@@ -95,7 +95,6 @@ def loadFile(inputFile, mixedMode = False, guiMode = False):
     else:
         result = re.findall(r'\d+: (.+?) PubMed\s{1,3}PMID:\s{1,3}(\d{7,8})', f, re.M | re.S)
     
-
     result = removeDuplicates(result, mixedMode, guiMode)
     
     return result
