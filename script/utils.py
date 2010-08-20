@@ -88,12 +88,12 @@ def loadFile(inputFile, mixedMode = False, guiMode = False):
     
     #Ottiene una lista di record che soddisfano la RegEx all'int
     if mixedMode:
-        result = re.findall(r'\s+(.+?) PubMed\s{1,3}PMID:\s{1,3}(\d{7,8})', f, re.M | re.S)
+        result = re.findall(r'\s+(.+?) PubMed\s{1,3}PMID:\s{1,3}(\d{6,8})', f, re.M | re.S)
         result = zip([re.sub(r'\d+: ', '', line[0]) for line in result], [line[1] for line in result])
     elif guiMode:
-        result = re.findall(r'(\d+): (.+?) PubMed\s{1,3}PMID:\s{1,3}(\d{7,8})', f, re.M | re.S)
+        result = re.findall(r'(\d+): (.+?) PubMed\s{1,3}PMID:\s{1,3}(\d{6,8})', f, re.M | re.S)
     else:
-        result = re.findall(r'\d+: (.+?) PubMed\s{1,3}PMID:\s{1,3}(\d{7,8})', f, re.M | re.S)
+        result = re.findall(r'\d+: (.+?) PubMed\s{1,3}PMID:\s{1,3}(\d{6,8})', f, re.M | re.S)
     
     result = removeDuplicates(result, mixedMode, guiMode)
     
