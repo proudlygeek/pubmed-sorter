@@ -26,7 +26,7 @@ Installation
 
 *On Ubuntu Linux*
 
-	sudo aptitude install git-core python-qt4 python-lxml
+	sudo aptitude install git-core python-qt4
 
 Downloading the latest source code:
 
