@@ -31,7 +31,7 @@ Installation
 Downloading the latest source code:
 
 	git clone git://github.com/proudlygeek/PubMed-Sorter.git
-	cd PubMed-Sorter && git submodule init && git submodule upidate
+	cd PubMed-Sorter && git submodule init && git submodule update
 
 Running PubMed Sorter:
 
